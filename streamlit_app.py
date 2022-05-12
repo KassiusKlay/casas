@@ -4,6 +4,8 @@ import pandas as pd
 import utils
 import streamlit.components.v1 as components
 
+st.set_page_config(layout='wide')
+
 components.html('''<!-- Default Statcounter code for Casas
 https://share.streamlit.io/kassiusklay/casas/main -->
 <script type="text/javascript">
@@ -19,7 +21,6 @@ src="https://c.statcounter.com/12752694/0/91e69369/1/" alt="Web Analytics"
 referrerPolicy="no-referrer-when-downgrade"></a></div></noscript>
 <!-- End of Statcounter Code -->''')
 
-st.set_page_config(layout='wide')
 engine = utils.init_engine()
 
 
