@@ -344,7 +344,11 @@ def show_listing(df):
     selection = int(st.number_input(
         'Seleccione Index para ver Fotos',
         0))
-    row = df.iloc[selection]
+    try:
+        row = df.iloc[selection]
+    except IndexError:
+        st.warning('Por favor escolha um index disponivel')
+        st.stop()
     site_url_prefix = 'https://remax.pt/imoveis/a/'
     st.write(f'LINK: {site_url_prefix}{row.id}')
     st.write(
