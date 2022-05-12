@@ -4,7 +4,7 @@ import pandas as pd
 import utils
 import streamlit.components.v1 as components
 
-st.set_page_config(layout='wide')
+# st.set_page_config(layout='wide')
 
 components.html("""
     <script type="text/javascript">
