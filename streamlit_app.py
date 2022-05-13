@@ -383,7 +383,7 @@ def filter_price_area(df):
                     & (df.listing_price <= end_price)
                     & (df.area >= start_area)
                     & (df.area <= end_area)]
-    return df
+    return df.reset_index(drop=True)
 
 
 def main():
