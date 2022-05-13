@@ -2,6 +2,7 @@ import pydeck as pdk
 import streamlit as st
 import pandas as pd
 import utils
+import streamlit_analytics
 
 st.set_page_config(layout='wide')
 engine = utils.init_engine()
@@ -372,6 +373,7 @@ def show_listing(df):
 
 
 def main():
+    streamlit_analytics.start_tracking()
     show_last_updated()
     # variation_per_business_type()
     (
@@ -385,6 +387,7 @@ def main():
     if not map_df.empty:
         show_map(map_df, color_selection)
         show_listing(map_df)
+     streamlit_analytics.stop_tracking()
 
 
 if __name__ == '__main__':
