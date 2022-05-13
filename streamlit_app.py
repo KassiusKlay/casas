@@ -325,7 +325,7 @@ def show_map(df, color_selection):
     tooltip = {
             "html":
             "<b>Index:</b> {index}</br>"
-            "<b>Preço:</b> {listing_price}</br>"
+            "<b>Preço:</b> {listing_price:.}</br>"
             "<b>Preço_m2:</b> {price_m2}</br>"
             "<b>Área:</b> {area}</br>"
             "<b>Quartos:</b> {bedrooms}</br>"
