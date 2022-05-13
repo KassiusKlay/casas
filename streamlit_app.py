@@ -382,7 +382,6 @@ def main():
     start_price, end_price = st.select_slider(
         'Escolha o preço', map_df.listing_price.sort_values(),
         value=(map_df.listing_price.min(), map_df.listing_price.max()))
-    st.write(start_price, end_price)
     map_df = map_df[(map_df.listing_price >= start_price)
                     & (map_df.listing_price <= end_price)]
     plot_df = get_plot_df(radio1, radio2, radio3, radio4, radio5)
