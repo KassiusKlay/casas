@@ -14,9 +14,9 @@ def pd_read_sql(sql):
 
 
 def show_last_updated():
-    st.write('INICIO DOS DADOS: ', pd_read_sql(
+    st.write('INÍCIO DOS DADOS: ', pd_read_sql(
             'SELECT MIN(date) FROM remax_total_listings').loc[0, max])
-    st.write('ULTIMA ACTUALIZACAO: ', pd_read_sql(
+    st.write('ÚLTIMA ACTUALIZAÇÃO: ', pd_read_sql(
             'SELECT MAX(date) FROM remax_total_listings').loc[0, max])
 
 
@@ -212,7 +212,7 @@ def variation_per_business_type():
             values='total_listings')
     region_pct_df = region_df.pct_change().cumsum()
 
-    st.title('Evolucao Mercado')
+    st.title('Evolução do Mercado')
     for i, business_type in enumerate(('Alugar', 'Comprar')):
         st.header(business_type)
         cols_region = st.columns(3)
@@ -286,7 +286,7 @@ def get_radio_selection():
 
 
 def show_plot(df):
-    st.title('Preco por m2 por data de insercao')
+    st.title('Preco por m2 por data de inserção')
     st.line_chart(df)
 
 
@@ -307,7 +307,7 @@ def show_map(df, color_selection):
             zoom=9,
             pitch=0)
     if df.latitude.isna().sum() == len(df):
-        st.warning('Sem coordenadas disponiveis para apresentar')
+        st.warning('Sem coordenadas disponíveis para apresentar')
         return
     df = df.copy().fillna('--').reset_index()
     scatter = pdk.Layer(
@@ -341,14 +341,14 @@ def show_map(df, color_selection):
 
 
 def show_listing(df):
-    st.title('Caracteristicas do Imovel')
+    st.title('Características do Imóvel')
     selection = int(st.number_input(
         'Seleccione Index para ver Fotos',
         0))
     try:
         row = df.iloc[selection]
     except IndexError:
-        st.warning('Por favor escolha um index disponivel')
+        st.warning('Por favor escolha um index disponível')
         st.stop()
     site_url_prefix = 'https://remax.pt/imoveis/a/'
     st.write(f'LINK: {site_url_prefix}{row.id}')
