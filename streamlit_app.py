@@ -379,7 +379,7 @@ def main():
             radio1, radio2, radio3,
             radio4, radio5, color_selection) = get_radio_selection()
     map_df = get_map_df(radio1, radio2, radio3, radio4, radio5)
-    start_price, end_price = st.select_slider('Escolha o preço', map_df.listing_price, value=(map_df.listing_price.min(), map_df.listing_price.max())
+    start_price, end_price = st.select_slider('Escolha o preço', map_df.listing_price, value=(map_df.listing_price.min(), map_df.listing_price.max()))
     plot_df = get_plot_df(radio1, radio2, radio3, radio4, radio5)
     st.success(f'Encontrados {len(map_df)} resultados')
     if not plot_df.empty:
