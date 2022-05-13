@@ -387,7 +387,7 @@ def main():
     if not map_df.empty:
         show_map(map_df, color_selection)
         show_listing(map_df)
-     streamlit_analytics.stop_tracking()
+    streamlit_analytics.stop_tracking()
 
 
 if __name__ == '__main__':
