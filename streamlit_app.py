@@ -370,9 +370,8 @@ def show_listing(df):
     pictures_url_prefix = 'https://i.maxwork.pt/l-view/'
     for i in pictures:
         st.image(pictures_url_prefix + i)
-        
 
-@st.experimental_memo
+        
 def filter_price_area(df):
     start_price, end_price = st.select_slider(
         'Escolha o preço', df.listing_price.sort_values(),
@@ -385,6 +384,7 @@ def filter_price_area(df):
                     & (df.area >= start_area)
                     & (df.area <= end_area)]
     return df
+
 
 def main():
     show_last_updated()
