@@ -370,7 +370,21 @@ def show_listing(df):
     pictures_url_prefix = 'https://i.maxwork.pt/l-view/'
     for i in pictures:
         st.image(pictures_url_prefix + i)
+        
 
+@st.experimental_memo
+def filter_price_area(df):
+    start_price, end_price = st.select_slider(
+        'Escolha o preço', df.listing_price.sort_values(),
+        value=(df.listing_price.min(), df.listing_price.max()))
+    start_area, end_area = st.select_slider(
+        'Escolha a área', df.area.sort_values(),
+        value=(df.area.min(), df.area.max()))
+    df = df[(df.listing_price >= start_price)
+                    & (df.listing_price <= end_price)
+                    & (df.area >= start_area)
+                    & (df.area <= end_area)]
+    return df
 
 def main():
     show_last_updated()
@@ -379,16 +393,9 @@ def main():
             radio1, radio2, radio3,
             radio4, radio5, color_selection) = get_radio_selection()
     map_df = get_map_df(radio1, radio2, radio3, radio4, radio5)
-    start_price, end_price = st.select_slider(
-        'Escolha o preço', map_df.listing_price.sort_values(),
-        value=(map_df.listing_price.min(), map_df.listing_price.max()))
-    start_area, end_area = st.select_slider(
-        'Escolha a área', map_df.area.sort_values(),
-        value=(map_df.area.min(), map_df.area.max()))
-    map_df = map_df[(map_df.listing_price >= start_price)
-                    & (map_df.listing_price <= end_price)
-                    & (map_df.area >= start_area)
-                    & (map_df.area <= end_area)]
+    if not map_df.empty:
+        map_df = filter_price_area(map_df)
+
     plot_df = get_plot_df(radio1, radio2, radio3, radio4, radio5)
     st.success(f'Encontrados {len(map_df)} resultados')
     if not plot_df.empty:
