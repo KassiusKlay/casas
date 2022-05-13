@@ -382,8 +382,13 @@ def main():
     start_price, end_price = st.select_slider(
         'Escolha o preço', map_df.listing_price.sort_values(),
         value=(map_df.listing_price.min(), map_df.listing_price.max()))
+    start_area, end_area = st.select_slider(
+        'Escolha a área', map_df.area.sort_values(),
+        value=(map_df.area.min(), map_df.area.max()))
     map_df = map_df[(map_df.listing_price >= start_price)
-                    & (map_df.listing_price <= end_price)]
+                    & (map_df.listing_price <= end_price)
+                    & (map_df.area >= start_area)
+                    & (map_df.area <= end_area)]
     plot_df = get_plot_df(radio1, radio2, radio3, radio4, radio5)
     st.success(f'Encontrados {len(map_df)} resultados')
     if not plot_df.empty:
