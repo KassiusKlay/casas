@@ -369,21 +369,43 @@ def show_listing(df):
     SELECT listing_pictures FROM remax_listings
     WHERE id = '{row.id}'""").loc[0, 'listing_pictures'].split(',')
     pictures_url_prefix = 'https://i.maxwork.pt/l-view/'
-    for i in pictures:
-        st.image(pictures_url_prefix + i)
+    cols = st.columns(5)
+    i = 0
+    for picture in pictures:
+        cols[i].image(pictures_url_prefix + picture)
+        i += 1
+        if i == 5:
+            i = 0
 
 
-def filter_price_area(df):
+def filter_price_area(df, color_selection):
     start_price, end_price = st.select_slider(
         'Escolha o preço', df.listing_price.sort_values(),
         value=(df.listing_price.min(), df.listing_price.max()))
     start_area, end_area = st.select_slider(
         'Escolha a área', df.area.sort_values(),
         value=(df.area.min(), df.area.max()))
+    delta_selection = st.select_slider(
+        'Escolha preco_m2:',
+        ['Abaixo da média', 'Todos', 'Acima da média'],
+        value='Todos')
+    if color_selection == 'Nacional':
+        delta = 'delta0'
+    elif color_selection == 'Distrito':
+        delta = 'delta1'
+    elif color_selection == 'Concelho':
+        delta = 'delta2'
+    else:
+        delta = 'delta3'
     df = df[(df.listing_price >= start_price)
             & (df.listing_price <= end_price)
             & (df.area >= start_area)
-            & (df.area <= end_area)]
+            & (df.area <= end_area)
+            ]
+    if delta_selection == 'Abaixo da média':
+        df = df[df[f'{delta}'] < 0]
+    elif delta_selection == 'Acima da média':
+        df = df[df[f'{delta}'] > 0]
     return df.reset_index(drop=True)
 
 
@@ -395,7 +417,7 @@ def main():
             radio4, radio5, color_selection) = get_radio_selection()
     map_df = get_map_df(radio1, radio2, radio3, radio4, radio5)
     if not map_df.empty:
-        map_df = filter_price_area(map_df)
+        map_df = filter_price_area(map_df, color_selection)
 
     plot_df = get_plot_df(radio1, radio2, radio3, radio4, radio5)
     st.success(f'Encontrados {len(map_df)} resultados')
