@@ -198,11 +198,12 @@ def variation_per_business_type():
                 ON region1.id = remax_total_listings.id
             """)
 
+    df.total_listings = df.total_listings.where(df.total_listings > 0, 1)
     type_df = df.groupby(['date', 'business_type']).agg({
         'total_listings': 'sum'})
     type_df = type_df.reset_index().pivot(
             index='date', columns='business_type', values='total_listings')
-    type_pct_df = type_df.pct_change().cumsum()
+    type_pct_df = type_df.pct_change(periods=len(type_df)-1)
 
     region_df = df.groupby(['date', 'business_type', 'region1']).agg({
         'total_listings': 'sum'})
@@ -210,7 +211,9 @@ def variation_per_business_type():
             index='date',
             columns=['business_type', 'region1'],
             values='total_listings')
-    region_pct_df = region_df.pct_change().cumsum()
+    st.write(region_df)
+    region_pct_df = region_df.pct_change(periods=len(region_df)-1)
+    st.write(region_pct_df)
 
     st.title('Evolução do Mercado')
     for i, business_type in enumerate(('Alugar', 'Comprar')):
@@ -371,7 +374,7 @@ def show_listing(df):
     for i in pictures:
         st.image(pictures_url_prefix + i)
 
-        
+
 def filter_price_area(df):
     start_price, end_price = st.select_slider(
         'Escolha o preço', df.listing_price.sort_values(),
@@ -380,15 +383,15 @@ def filter_price_area(df):
         'Escolha a área', df.area.sort_values(),
         value=(df.area.min(), df.area.max()))
     df = df[(df.listing_price >= start_price)
-                    & (df.listing_price <= end_price)
-                    & (df.area >= start_area)
-                    & (df.area <= end_area)]
+            & (df.listing_price <= end_price)
+            & (df.area >= start_area)
+            & (df.area <= end_area)]
     return df.reset_index(drop=True)
 
 
 def main():
     show_last_updated()
-    # variation_per_business_type()
+    variation_per_business_type()
     (
             radio1, radio2, radio3,
             radio4, radio5, color_selection) = get_radio_selection()
@@ -403,13 +406,13 @@ def main():
     if not map_df.empty:
         show_map(map_df, color_selection)
         show_listing(map_df)
-        
+
     components.html("""<!-- Default Statcounter code for Casas
     https://share.streamlit.io/kassiusklay/casas/main -->
     <script type="text/javascript">
-    var sc_project=12752694; 
-    var sc_invisible=1; 
-    var sc_security="91e69369"; 
+    var sc_project=12752694;
+    var sc_invisible=1;
+    var sc_security="91e69369";
     </script>
     <script type="text/javascript"
     src="https://www.statcounter.com/counter/counter.js"
@@ -425,5 +428,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
-   
