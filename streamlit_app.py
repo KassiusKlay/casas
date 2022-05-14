@@ -211,9 +211,7 @@ def variation_per_business_type():
             index='date',
             columns=['business_type', 'region1'],
             values='total_listings')
-    st.write(region_df)
     region_pct_df = region_df.pct_change(periods=len(region_df)-1)
-    st.write(region_pct_df)
 
     st.title('Evolução do Mercado')
     for i, business_type in enumerate(('Alugar', 'Comprar')):
