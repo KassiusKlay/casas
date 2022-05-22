@@ -8,7 +8,7 @@ st.set_page_config(layout='wide')
 engine = utils.init_engine()
 
 
-@st.experimental_memo
+@st.experimental_memo(ttl=6000)
 def pd_read_sql(sql):
     return pd.read_sql(sql, engine)
 
@@ -43,7 +43,7 @@ def apply_color(x):
     return value
 
 
-@st.experimental_memo
+@st.experimental_memo(ttl=6000)
 def get_mean_price_m2(radio1):
     df = pd_read_sql(
             f"""
@@ -80,7 +80,7 @@ def get_mean_price_m2(radio1):
             ).agg({'price_m2': 'mean'}).round(2)
 
 
-@st.experimental_memo
+@st.experimental_memo(ttl=6000)
 def get_map_df(radio1, radio2, radio3, radio4, radio5):
     sql = f"""
         SELECT
@@ -145,7 +145,7 @@ def get_map_df(radio1, radio2, radio3, radio4, radio5):
     return df
 
 
-@st.experimental_memo
+@st.experimental_memo(ttl=6000)
 def get_plot_df(radio1, radio2, radio3, radio4, radio5):
     sql = f"""
         SELECT
